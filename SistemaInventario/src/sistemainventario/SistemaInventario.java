@@ -5,8 +5,10 @@
 package sistemainventario;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Scanner;
@@ -45,6 +47,7 @@ public class SistemaInventario {
           if (contraseñaIngresada.equals(administrador)){ // abre 2do if
           
               // inicio de secion exitoso, mostrar opciones del sistema
+              System.out.println("MenuGeneral");
           MenuGeneral ();
           }// cierra 2do if
           
@@ -107,7 +110,7 @@ public class SistemaInventario {
         System.out.println("5. Salir");
         System.out.println("6. Ingrese la Opcion que Desee:");
         Opcion=scan.nextInt();
-        
+        System.out.println(Opcion);
         switch (Opcion){// abre switch
             case 1: 
                 gestionProductos();
@@ -132,16 +135,14 @@ public class SistemaInventario {
         }// cierra switch      
     }// Cierra menu general 
 
-   static void gestionProductos () {// abre metodo Gestion de Productos 
-       
+  static void gestionProductos () {// abre metodo Gestion de Productos 
+        String archivoCategoria= "categorias.txt";
+       Scanner scan= new Scanner (System.in);
+        
         int Opcion;
-        
-        Scanner scan= new Scanner (System.in);
-        String[] categoria=new String[10];// ajuste del tamaño segun la necesidad del usuario
-      int totalCategoria=0; // contador para llevar un seguimiento del numero actual  de los empleados
-        
-        System.out.println("***bienvenido a Definicion de Categorias***");
-         System.out.println("------------------------------------------");
+      
+        System.out.println("***Definicion de Categorias***");
+         System.out.println("-----------------------------");
          System.out.println("1. Ver Categorias");
          System.out.println("2. Agregar Categorias"); 
          System.out.println("3. Modificar Categoria");
@@ -152,28 +153,20 @@ public class SistemaInventario {
          
          switch (Opcion){// Abre Switch
              
-            case 1://agrega una Categoria 
-             if(totalCategoria < categoria.length)// length quiere desir longitud
-             { //abre if total categoria
-                 System.out.println("ingrese Nombre de la Categoria");
-                 scan.nextLine();// consume la linea en blanco
-                 String nuevaCategoria=scan.nextLine();
-                 categoria[totalCategoria]=nuevaCategoria;
-                 totalCategoria++;
-                 System.out.println("Categoria agregado con Exito!");
-                 }// cierra if total Categoria 
-             else { // abre else 
-                 System.out.println("la lista de Categorias esta llena. No se pueden agregar mas ");
-             }// cierra else
-             
-            case 2: 
+            case 1:
+                mostrarCategorias();
+           break;
+           
+            case 2:
                 agregarCategoria();
-            break;
+                
+                break;
+            
             case 3:
-                modificarCategoria();
+                
             break;
             case 4: 
-                eliminarCategoria();
+               ;
             break;
             
             case 5: // Salir del sistema
@@ -197,40 +190,54 @@ public class SistemaInventario {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
-    static void mostrarCategorias() {// abre Mostrar Categoria 
-      File archivoCategorias = new File ("categorias.txt");
-        try (BufferedReader br= new BufferedReader(new FileReader (archivoCategorias))){//abre try 
-        String linea;
-        while ((linea = br.readLine()) != null) {// abre while
-          String[] partes= linea.split("\\|");
-          System.out.println("nombre:"+ partes [0]);
-          System.out.println("Descripción: " + (partes.length > 1 ? partes[1] : "N/A"));
-       System.out.println();
-       
-       
-        }// cierra while
+    private static void mostrarCategorias() {// abre mostrar Categorias 
         
-           
-       }catch (IOException e){// abre catch
-     System.out.println("Error al leer el archivo.");
-       } // cierra catch
+     
+}//Cierra Mostrar Categorias
+
+    static void agregarCategoria() {// abre agreagar Categoria 
+        Scanner scan=new Scanner(System.in);
+        
+        System.out.println("ingrese el nombre de la Categoria");
+        String nombre= scan.next();
+        System.out.println("descripcion de Categoria");
+        String descripcion= scan.next();
+    String categoria= nombre+descripcion;
+        System.out.println("categoria agregada exitosamente"+categoria);
+         File f=new File("Categorias.txt");
+        
+         try {
+            FileWriter fw = new FileWriter(f, true);
+            BufferedWriter bw = new BufferedWriter(fw);
+
+            // Escribir los datos en el archivo
+            bw.write(categoria+"\n");
+            
+            
+            bw.close();// Cerrar el archivo
+
+
+            System.out.println("Las categorias se han guardado en el archivo correctamente!");
+            } catch (IOException  e) {
+          
+        }
+        }// Cieera Agregar Categoria 
+            
+
+     
+  
+        
+        
+     
     
     
- }// cierra mostrar categoria 
-
-    private static void agregarCategoria() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    private static void modificarCategoria() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    private static void eliminarCategoria() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
+   }// cierra sistema de inventario
 
     
-   }
+    
+    
+
+    
+   
     
 
