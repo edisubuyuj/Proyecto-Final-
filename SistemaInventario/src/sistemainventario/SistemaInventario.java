@@ -190,40 +190,67 @@ public class SistemaInventario {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
-    private static void mostrarCategorias() {// abre mostrar Categorias 
-        
-     
+   static void mostrarCategorias() {// abre mostrar Categorias 
+    File f= new File ("Categorias.txt");
+    System.out.println("Listado de Categorias Existentes:");
+            try (BufferedReader br = new BufferedReader(new FileReader("categorias.txt"))) {
+            String linea;
+            while ((linea = br.readLine()) != null) {
+                String[] partes = linea.split("\\|");
+                System.out.println("Nombre: " + partes[0]);
+                System.out.println("Descripción: " + (partes.length > 1 ? partes[1] : "N/A"));
+                System.out.println();
+            }
+        } catch (IOException e) {
+            System.out.println("Error al leer el archivo.");}
+
 }//Cierra Mostrar Categorias
 
     static void agregarCategoria() {// abre agreagar Categoria 
         Scanner scan=new Scanner(System.in);
+                System.out.print("Ingrese el nombre de la categoría: ");
+        String nombre = scan.nextLine();
         
-        System.out.println("ingrese el nombre de la Categoria");
-        String nombre= scan.next();
-        System.out.println("descripcion de Categoria");
-        String descripcion= scan.next();
-    String categoria= nombre+descripcion;
-        System.out.println("categoria agregada exitosamente"+categoria);
-         File f=new File("Categorias.txt");
-        
-         try {
-            FileWriter fw = new FileWriter(f, true);
-            BufferedWriter bw = new BufferedWriter(fw);
-
-            // Escribir los datos en el archivo
-            bw.write(categoria+"\n");
-            
-            
-            bw.close();// Cerrar el archivo
-
-
-            System.out.println("Las categorias se han guardado en el archivo correctamente!");
-            } catch (IOException  e) {
-          
+        if (nombre.isEmpty() || categoriaExiste(nombre)) {
+            System.out.println("El nombre de la categoría no puede estar vacío o ya existe.");
+            return;
         }
-        }// Cieera Agregar Categoria 
-            
 
+        System.out.print("Ingrese la descripción de la categoría (opcional): ");
+        String descripcion = scan.nextLine();
+        
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(("categorias.txt"), true))) {
+            bw.write(nombre + "|" + descripcion);
+            bw.newLine();
+            System.out.println("Categoría agregada exitosamente.");
+        } catch (IOException e) {
+            System.out.println("Error al escribir en el archivo.");
+        }
+
+       
+}// Cierra Agregar Categoria 
+            
+//
+
+    private static boolean categoriaExiste(String nombre) { // abre categoria exixtente
+        try (BufferedReader br = new BufferedReader(new FileReader(("categorias.txt")))) {
+            String linea;
+            while ((linea = br.readLine()) != null) {
+                String[] partes = linea.split("\\|");
+                if (partes[0].equals(nombre)) {
+                    return true;
+                }
+            }
+        } catch (IOException e) {
+            System.out.println("Error al leer el archivo.");
+        }
+        return false;
+
+    
+    
+    
+    
+    } // categoria existente
      
   
         
@@ -239,5 +266,7 @@ public class SistemaInventario {
 
     
    
-    
+   
+        
+     
 
