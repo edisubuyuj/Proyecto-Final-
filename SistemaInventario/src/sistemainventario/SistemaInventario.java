@@ -11,6 +11,8 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 /**
@@ -163,10 +165,10 @@ public class SistemaInventario {
                 break;
             
             case 3:
-                
+                modificarCategoria();
             break;
             case 4: 
-               ;
+               eliminarCategoria();
             break;
             
             case 5: // Salir del sistema
@@ -216,22 +218,19 @@ public class SistemaInventario {
             return;
         }
 
-        System.out.print("Ingrese la descripción de la categoría (opcional): ");
+        System.out.print("Ingrese la descripcion de la categoría (opcional): ");
         String descripcion = scan.nextLine();
         
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(("categorias.txt"), true))) {
             bw.write(nombre + "|" + descripcion);
             bw.newLine();
-            System.out.println("Categoría agregada exitosamente.");
+            System.out.println("Categoria agregada exitosamente.");
         } catch (IOException e) {
             System.out.println("Error al escribir en el archivo.");
         }
 
-       
-}// Cierra Agregar Categoria 
-            
-//
-
+      }// Cierra Agregar Categoria 
+          
     private static boolean categoriaExiste(String nombre) { // abre categoria exixtente
         try (BufferedReader br = new BufferedReader(new FileReader(("categorias.txt")))) {
             String linea;
@@ -245,12 +244,101 @@ public class SistemaInventario {
             System.out.println("Error al leer el archivo.");
         }
         return false;
+ } // categoria existente
 
-    
-    
-    
-    
-    } // categoria existente
+    private static void modificarCategoria() {// Abre Modificar Categoira
+      mostrarCategorias();
+       Scanner scan=new Scanner(System.in);
+     
+        System.out.print("Ingrese el nombre de la categoria que desea modificar: ");// escribir el Nombre de la categoria existente en el archivo
+        String nombreAntiguo = scan.nextLine();
+        
+        if (!categoriaExiste(nombreAntiguo)) {
+            System.out.println("La categoria no existe.");
+            return;
+        }
+        
+        System.out.print("Ingrese el nuevo nombre de la categoria: ");
+        String nuevoNombre = scan.nextLine();// ingresar el nuevo Nombre que se le dara a la Categoria
+        
+        if (nuevoNombre.isEmpty() || categoriaExiste(nuevoNombre)) {
+            System.out.println("El nuevo nombre de la categoria no puede estar vacio o ya existe.");
+            return;
+        }
+        
+        System.out.print("Ingrese la nueva descripcion de la categoría (opcional): ");
+        String nuevaDescripcion = scan.nextLine();// escribir la Nueva descripcion que se le dara a la categoria
+        
+        List<String> categorias = new ArrayList<>();
+        try (BufferedReader br = new BufferedReader(new FileReader("categorias.txt"))) {
+            String linea;
+            while ((linea = br.readLine()) != null) {
+                String[] partes = linea.split("\\|");
+                if (partes[0].equals(nombreAntiguo)) {
+                    categorias.add(nuevoNombre + "|" + nuevaDescripcion);
+                } else {
+                    categorias.add(linea);
+                }
+            }
+        } catch (IOException e) {
+            System.out.println("Error al leer el archivo.");
+        }
+        
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter("categorias."))) {
+            for (String categoria : categorias) {
+                bw.write(categoria);
+                bw.newLine();
+            }
+            System.out.println("Categoria modificada exitosamente.");
+        } catch (IOException e) {
+            System.out.println("Error al escribir en el archivo.");
+        }
+
+  }// Cierra Modificar Categoria
+
+    private static void eliminarCategoria() {// abre eliminar Categoria 
+       mostrarCategorias();
+        Scanner scan=new Scanner(System.in);
+        
+      System.out.print("Ingrese el nombre de la categoria que desea eliminar: ");
+        String nombre = scan.nextLine();
+        
+        if (!categoriaExiste(nombre)) {
+            System.out.println("La categoria no existe.");
+            return;
+        }
+        
+        System.out.print("¿Esta seguro de que desea eliminar la categoría? (si/no): ");
+        String confirmacion = scan.nextLine();
+        
+        if (!confirmacion.equalsIgnoreCase("si")) {
+            System.out.println("Eliminacion cancelada.");
+            return;
+        }
+        
+        List<String> categorias = new ArrayList<>();
+        try (BufferedReader br = new BufferedReader(new FileReader("categorias.txt"))) {
+            String linea;
+            while ((linea = br.readLine()) != null) {
+                String[] partes = linea.split("\\|");
+                if (!partes[0].equals(nombre)) {
+                    categorias.add(linea);
+                }
+            }
+        } catch (IOException e) {
+            System.out.println("Error al leer el archivo.");
+        }
+        
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter("categorias.txt"))) {
+            for (String categoria : categorias) {
+                bw.write(categoria);
+                bw.newLine();
+            }
+            System.out.println("Categoria eliminada exitosamente!");
+        } catch (IOException e) {
+            System.out.println("Error al escribir en el archivo.");
+        }
+   }// Cierra eliminar Categoria 
      
   
         
