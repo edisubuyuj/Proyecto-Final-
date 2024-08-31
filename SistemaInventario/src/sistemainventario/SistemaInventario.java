@@ -118,13 +118,13 @@ public class SistemaInventario {
                 gestionProductos();
                 break;
           
-            case 2: controlExistencias();
+            case 2: //controlExistencias();
             break;
             
-            case 3: pedidosCompra();
+            case 3: //pedidosCompra();
             break;
             
-            case 4: InformesEstadistica();
+            case 4: //InformesEstadistica();
             break;
             
             case 5: // salir del programa
@@ -138,13 +138,41 @@ public class SistemaInventario {
     }// Cierra menu general 
 
   static void gestionProductos () {// abre metodo Gestion de Productos 
-        String archivoCategoria= "categorias.txt";
+      Scanner scan= new Scanner (System.in);  
+      int Opcion;
+      System.out.println("***Bienvenido ha Gestion de Productos***");
+         System.out.println("------------------------------------");
+         System.out.println("1. Definicion de Categorias");
+         System.out.println("2. Definicion de Caracteristicas"); 
+         System.out.println("3. Definicion de Especificaciones");
+         System.out.println("4. Asignacion de Caracteristicas y Especificaciones a Productos");
+         System.out.println("5. alta de Productos");
+         System.out.println("6. baja de Productos"); 
+         System.out.println("7. Modificacion de Productos");
+         System.out.println("8. Consideraciones Adicionales");
+         System.out.println("9. salir");
+         System.out.println("Selecione una Opcion");
+         Opcion= scan.nextInt();
+      System.out.println(Opcion);
+      switch (Opcion){// abre switch
+          case 1: 
+              definicionCategorias();
+          break;
+          case 2:definicionCaracteristicas();
+          break;
+              
+      }// cierra switch
+  }// cierra Gestion de Productos 
+      
+   
+      static void definicionCategorias (){// abre Definicion de Categorias 
+      String archivoCategoria= "categorias.txt";
        Scanner scan= new Scanner (System.in);
         
         int Opcion;
       
-        System.out.println("***Definicion de Categorias***");
-         System.out.println("-----------------------------");
+        System.out.println("***Categorias de Productos***");
+           System.out.println("-----------------------");
          System.out.println("1. Ver Categorias");
          System.out.println("2. Agregar Categorias"); 
          System.out.println("3. Modificar Categoria");
@@ -178,21 +206,9 @@ public class SistemaInventario {
                 throw new AssertionError();
             
     }// Cierra Switch
-  }// cierra gestion de productos 
+  }// cierra Definicion de Categorias 
 
-    private static void controlExistencias() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    private static void pedidosCompra() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    private static void InformesEstadistica() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-   static void mostrarCategorias() {// abre mostrar Categorias 
+    static void mostrarCategorias() {// abre mostrar Categorias 
     File f= new File ("Categorias.txt");
     System.out.println("Listado de Categorias Existentes:");
             try (BufferedReader br = new BufferedReader(new FileReader("categorias.txt"))) {
@@ -339,6 +355,61 @@ public class SistemaInventario {
             System.out.println("Error al escribir en el archivo.");
         }
    }// Cierra eliminar Categoria 
+
+    static void definicionCaracteristicas() {// abre Definicion de Caracteristicas
+         Scanner scan= new Scanner (System.in);
+        
+        int Opcion;
+      
+        System.out.println("***Caracteristicas de Productos***");
+        System.out.println("----------------------------------");
+         System.out.println("1. Ver Caracteristicas");
+         System.out.println("2. Agregar Caracteristica"); 
+         System.out.println("3. Modificar Caracteristica");
+         System.out.println("4. Eliminar Caracteristica");
+         System.out.println("5.Salir");
+         System.out.println("Seleccione una opcion"); 
+         Opcion= scan.nextInt();
+    
+    switch (Opcion){// abre switch
+        case 1: 
+            mostrarCaracteristicas();
+            break;
+        case 2:
+          agregarCaracteristicas();
+          break;
+        case 3:
+            modificarCaracteristicas();
+            break;
+        case 4:
+            eliminarCaracteristicas();
+            break;
+        case 5:
+             System.out.println("Saliendo del Programa");
+            break;
+            default:
+                throw new AssertionError();
+          
+    }// cieera switch 
+    
+    }// Cierra Defincion de Caracteristicas
+
+    private static void mostrarCaracteristicas() {// Abre Mostrar Caracteristicas 
+        
+    }// cirra Mostrar Caracteristicas 
+
+    private static void agregarCaracteristicas() {// Abre Agregar Caracteristicas
+        
+        }//cierra Agregar Caracteristicas 
+
+    private static void modificarCaracteristicas() {// Abre Modificar caracteristicas 
+        
+        }// cierra Modificar Caracteristicas 
+
+    private static void eliminarCaracteristicas() {// Abre Eliminar Caracteristicas 
+        
+        }// cierra Eliminar Caracteristicas 
+    
      
   
         
