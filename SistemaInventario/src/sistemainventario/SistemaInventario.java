@@ -160,7 +160,8 @@ public class SistemaInventario {
           break;
           case 2:definicionCaracteristicas();
           break;
-              
+          case 3:
+              definicionEspecificaciones();
       }// cierra switch
   }// cierra Gestion de Productos 
       
@@ -208,7 +209,8 @@ public class SistemaInventario {
     }// Cierra Switch
   }// cierra Definicion de Categorias 
 
-    static void mostrarCategorias() {// abre mostrar Categorias 
+    static void mostrarCategorias() {// abre mostrar Categorias
+        
     File f= new File ("Categorias.txt");
     System.out.println("Listado de Categorias Existentes:");
             try (BufferedReader br = new BufferedReader(new FileReader("categorias.txt"))) {
@@ -300,7 +302,7 @@ public class SistemaInventario {
             System.out.println("Error al leer el archivo.");
         }
         
-        try (BufferedWriter bw = new BufferedWriter(new FileWriter("categorias."))) {
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter("categorias.txt"))) {
             for (String categoria : categorias) {
                 bw.write(categoria);
                 bw.newLine();
@@ -396,19 +398,166 @@ public class SistemaInventario {
 
     private static void mostrarCaracteristicas() {// Abre Mostrar Caracteristicas 
         
-    }// cirra Mostrar Caracteristicas 
+     System.out.println("Listado de Caracteristicas Existentes:");
+            try (BufferedReader br = new BufferedReader(new FileReader("caracteristicas.txt"))) {// abre try 
+            String linea;
+            while ((linea = br.readLine()) != null) {// abre while
+                String[] partes = linea.split("\\|");
+                System.out.println("Nombre: " + partes[0]);
+                System.out.println("Descripción: " + (partes.length > 1 ? partes[1] : "N/A"));
+                System.out.println();
+            }// cierra while
+        }// cierra try 
+            catch (IOException e) {// abre catch
+            System.out.println("Error al leer el archivo.");}// cierra catch  
+        }// cirra Mostrar Caracteristicas 
 
     private static void agregarCaracteristicas() {// Abre Agregar Caracteristicas
+        Scanner scan=new Scanner(System.in);
         
-        }//cierra Agregar Caracteristicas 
+        System.out.print("Ingrese el nombre de la Caracteristica: ");
+        String nombre = scan.nextLine();
+        
+        if (nombre.isEmpty() || caracteristicaExiste(nombre)) {// abre if
+            System.out.println("El nombre de la Caracteristica no puede estar vacío o ya existe.");
+            return;
+        }// cierra if
+
+        System.out.print("Ingrese la descripcion de la Caracteristica (opcional): ");
+        String descripcion = scan.nextLine();
+        
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(("caracteristicas.txt"), true))) {// abre try
+            bw.write(nombre + "|" + descripcion);
+            bw.newLine();
+            System.out.println("Caracteristicas agregada exitosamente.");
+        }// cierra try
+        catch (IOException e) {// abre catch
+            System.out.println("Error al escribir en el archivo.");
+        }// cierra catch
+}//cierra Agregar Caracteristicas 
 
     private static void modificarCaracteristicas() {// Abre Modificar caracteristicas 
+       mostrarCaracteristicas ();// listado de caracteristicas existentes en el archivo txt
+       Scanner scan=new Scanner(System.in);
+     
+        System.out.print("Ingrese el nombre de la Caracteristica que desea modificar: ");// escribir el Nombre de la caracteristica existente en el archivo
+        String nombreAntiguo = scan.nextLine();
         
+        if (!caracteristicaExiste(nombreAntiguo)) {//abre if. si caracteritica no es igual a nombre antiguo enotnces no existe
+            System.out.println("La caracteristica no existe.");
+            return;
+        }// cierra if
+        
+        System.out.print("Ingrese el nuevo nombre de la caracteristica: ");
+        String nuevoNombre = scan.nextLine();// ingresar el nuevo Nombre que se le dara a la Caracteristica
+        
+        if (nuevoNombre.isEmpty() || caracteristicaExiste(nuevoNombre)) {// abre if
+            System.out.println("El nuevo nombre de la Caracteristica no puede estar vacio o ya existe.");
+            return;
+        }// cierra if
+        
+        System.out.print("Ingrese la nueva descripcion de la Caracteristica (opcional): ");
+        String nuevaDescripcion = scan.nextLine();// escribir la Nueva descripcion que se le dara a la caracteristica
+        
+        List<String> caracteristicas = new ArrayList<>();
+        try (BufferedReader br = new BufferedReader(new FileReader("caracteristicas.txt"))) {// abre try
+            String linea;
+            while ((linea = br.readLine()) != null) {// abre while
+                String[] partes = linea.split("\\|");
+                if (partes[0].equals(nombreAntiguo)) {//abre if 
+                    caracteristicas.add(nuevoNombre + "|" + nuevaDescripcion);// agrega el nuevo nombre / nueva descripcion
+                }// cierra if 
+                else {// abre else 
+                    caracteristicas.add(linea);
+                }// cierra else
+            }// cierra while
+        }// cierra try  
+        catch (IOException e) {// abre catch
+            System.out.println("Error al leer el archivo.");
+        }// cierra catch
+        
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter("caracteristicas.txt"))) {// abre try
+            for (String caracteristica : caracteristicas) {// abre for
+                bw.write(caracteristica);
+                bw.newLine();
+            }// cierra for
+            System.out.println("Caracteristica modificada exitosamente!");
+        }// cierra try
+        catch (IOException e) {// abre Catch
+            System.out.println("Error al escribir en el archivo.");
+        }// cierra Catch
         }// cierra Modificar Caracteristicas 
 
     private static void eliminarCaracteristicas() {// Abre Eliminar Caracteristicas 
+        mostrarCaracteristicas(); // listado de Caracteristicas existentes en el archivo txt
+        Scanner scan=new Scanner(System.in);
         
-        }// cierra Eliminar Caracteristicas 
+      System.out.print("Ingrese el nombre de la caracteristica que desea eliminar: ");
+        String nombre = scan.nextLine();
+        
+        if (!caracteristicaExiste(nombre)) {// abre if.si caracteritica no es igual a nombre antiguo enotnces no existe
+            System.out.println("La Caracteristica no existe.");
+            return;
+        }// cierra if
+        
+        System.out.print("¿Esta seguro de que desea eliminar la Caracteristica? (si/no): ");
+        String confirmacion = scan.nextLine();
+        
+        if (!confirmacion.equalsIgnoreCase("si")) {// abre if. si confirmacion es diferente a si entonces eliminacion cancelada 
+            System.out.println("Eliminacion cancelada.");
+            return;
+        }// cierra if 
+        
+        List<String> caracteristicas = new ArrayList<>();
+        try (BufferedReader br = new BufferedReader(new FileReader("caracteristicas.txt"))) {// abre try
+            String linea;
+            while ((linea = br.readLine()) != null) {// abre while
+                String[] partes = linea.split("\\|");
+                if (!partes[0].equals(nombre)) {// abre if
+                    caracteristicas.add(linea);
+                }// cierra if
+            }// cierra while
+        }// cierra try
+        catch (IOException e) {// abre catch
+            System.out.println("Error al leer el archivo.");
+        }// cierra catch
+        
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter("caracteristicas.txt"))) {// abre try
+            for (String caracteristica : caracteristicas) {// abre for
+                bw.write(caracteristica);
+                bw.newLine();
+            }// cierra for
+            System.out.println("Caracteristica eliminada exitosamente!");
+        }// cierra try
+        catch (IOException e) {// abre catch
+            System.out.println("Error al escribir en el archivo.");
+        }// cierra catch
+ }// cierra Eliminar Caracteristicas 
+
+    private static boolean caracteristicaExiste(String nombre) {// abre caracteristicas existente
+      try (BufferedReader br = new BufferedReader(new FileReader(("caracteristicas.txt")))) {// abre try
+            String linea;
+            while ((linea = br.readLine()) != null) {// abre while
+                String[] partes = linea.split("\\|");
+                if (partes[0].equals(nombre)) {// abre if
+                    return true;
+                }// cierra if
+            }// cierra while
+        }// cierra try 
+      catch (IOException e) {// abre catch
+            System.out.println("Error al leer el archivo.");
+        }// cierra catch
+        return false;  
+   }// cierra caracteristicas existente
+
+    private static void definicionEspecificaciones() {// abre definicion de especificaciones 
+        
+    
+    
+    
+    
+    
+    }// cierra Definicion de especificaciones 
     
      
   
