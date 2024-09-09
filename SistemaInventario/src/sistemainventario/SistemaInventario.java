@@ -150,7 +150,7 @@ public class SistemaInventario {
          System.out.println("6. baja de Productos"); 
          System.out.println("7. Modificacion de Productos");
          System.out.println("8. Consideraciones Adicionales");
-         System.out.println("9. salir");
+         System.out.println("9. salir...");
          System.out.println("Selecione una Opcion");
          Opcion= scan.nextInt();
       System.out.println(Opcion);
@@ -179,7 +179,7 @@ public class SistemaInventario {
          System.out.println("3. Modificar Categoria");
          System.out.println("4. Eliminar Categoria");
          System.out.println("5.Salir");
-         System.out.println("Seleccione una opcion"); 
+         System.out.println("Seleccione una opcion."); 
          Opcion= scan.nextInt();
          
          switch (Opcion){// Abre Switch
@@ -218,7 +218,7 @@ public class SistemaInventario {
             while ((linea = br.readLine()) != null) {
                 String[] partes = linea.split("\\|");
                 System.out.println("Nombre: " + partes[0]);
-                System.out.println("Descripción: " + (partes.length > 1 ? partes[1] : "N/A"));
+                System.out.println("Descripcion: " + (partes.length > 1 ? partes[1] : "N/A"));
                 System.out.println();
             }
         } catch (IOException e) {
@@ -369,8 +369,8 @@ public class SistemaInventario {
          System.out.println("2. Agregar Caracteristica"); 
          System.out.println("3. Modificar Caracteristica");
          System.out.println("4. Eliminar Caracteristica");
-         System.out.println("5.Salir");
-         System.out.println("Seleccione una opcion"); 
+         System.out.println("5.Salir...");
+         System.out.println("Seleccione una opcion."); 
          Opcion= scan.nextInt();
     
     switch (Opcion){// abre switch
@@ -404,7 +404,7 @@ public class SistemaInventario {
             while ((linea = br.readLine()) != null) {// abre while
                 String[] partes = linea.split("\\|");
                 System.out.println("Nombre: " + partes[0]);
-                System.out.println("Descripción: " + (partes.length > 1 ? partes[1] : "N/A"));
+                System.out.println("Descripcion: " + (partes.length > 1 ? partes[1] : "N/A"));
                 System.out.println();
             }// cierra while
         }// cierra try 
@@ -552,12 +552,160 @@ public class SistemaInventario {
 
     private static void definicionEspecificaciones() {// abre definicion de especificaciones 
         
+    Scanner scan= new Scanner (System.in);
+        
+        int Opcion;
+      
+        System.out.println("***Especificaciones de Productos***");
+        System.out.println("----------------------------------");
+         System.out.println("1. Ver Especificaciones");
+         System.out.println("2. Agregar Especificaciones"); 
+         System.out.println("3. Modificar Especificaciones");
+         System.out.println("4. Eliminar Especificaciones");
+         System.out.println("5.Salir...");
+         System.out.println("Seleccione una opcion."); 
+         Opcion= scan.nextInt();
     
-    
-    
-    
-    
-    }// cierra Definicion de especificaciones 
+    switch (Opcion){// abre switch
+        case 1: 
+           mostrarEspecificaciones ();
+            break;
+        case 2:
+          agregarEspecificaciones();
+          break;
+        case 3:
+           modificarEspecificaciones();
+            break;
+        case 4:
+            //eliminarEspecificaciones();
+            break;
+        case 5:
+             System.out.println("Saliendo del Programa...");
+            break;
+            default:
+                throw new AssertionError();
+          
+    }// cieera switch 
+}// cierra Definicion de especificaciones 
+
+    private static void mostrarEspecificaciones() {// abre mostrar especificaciones 
+        
+        System.out.println("Listado de Especificaciones Existentes:");
+            try (BufferedReader br = new BufferedReader(new FileReader("especificaciones.txt"))) {// abre try 
+            String linea;
+            while ((linea = br.readLine()) != null) {// abre while
+                String[] partes = linea.split("\\|");
+                System.out.println("Nombre: " + partes[0]);
+                System.out.println("Descripcion: " + (partes.length > 1 ? partes[1] : "N/A"));
+                System.out.println("Tipo de Dato: " + partes[2]);
+                System.out.println();
+            }// cierra while
+        }// cierra try 
+            catch (IOException e) {// abre catch
+            System.out.println("Error al leer el archivo.");}// cierra catch 
+}// cierra Mostrar especificaciones 
+
+    private static void agregarEspecificaciones() {// abre agregar especificaciones
+        
+      Scanner scan=new Scanner(System.in);
+        
+        System.out.print("Ingrese el nombre de la Especificacion: ");
+        String nombre = scan.nextLine();
+        
+        if (nombre.isEmpty() || especificacionExiste(nombre)) {// abre if
+            System.out.println("El nombre de la Especificacion no puede estar vacío o ya existe.");
+            return;
+        }// cierra if
+
+        System.out.print("Ingrese la descripcion de la Especificacion (opcional): ");
+        String descripcion = scan.nextLine();
+        
+         System.out.print("Tipo de Dato (texto,numero,fecha,etc...): ");
+        String tipoDato = scan.nextLine();
+        
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(("especificaciones.txt"), true))) {// abre try
+            bw.write(nombre + "|" + descripcion + "|" + tipoDato);
+            bw.newLine();
+            System.out.println("especificacion agregada exitosamente!");
+        }// cierra try
+        catch (IOException e) {// abre catch
+            System.out.println("Error al escribir en el archivo.");
+        }// cierra catch  
+ }// cierra agregar especificaciones 
+
+    private static boolean especificacionExiste(String nombre) {// abre especificacion existe
+      
+        try (BufferedReader br = new BufferedReader(new FileReader(("especificaciones.txt")))) {// abre try
+            String linea;
+            while ((linea = br.readLine()) != null) {// abre while
+                String[] partes = linea.split("\\|");
+                if (partes[0].equals(nombre)) {// abre if
+                    return true;
+                }// cierra if
+            }// cierra while
+        }// cierra try 
+      catch (IOException e) {// abre catch
+            System.out.println("Error al leer el archivo.");
+        }// cierra catch
+        return false;  
+    }// cierra especificacion existe 
+
+    private static void modificarEspecificaciones() {// abre Modificar especificaciones 
+        mostrarEspecificaciones();
+        
+         Scanner scan=new Scanner(System.in);
+     
+        System.out.print("Ingrese el nombre de la Especificacion que desea modificar: ");// escribir el Nombre de la Especificacion existente en el archivo
+        String nombreAntiguo = scan.nextLine();
+        
+        if (!especificacionExiste(nombreAntiguo)) {//abre if. si especificacion no es igual a nombre antiguo enotonces no existe
+            System.out.println("La Especificacion no existe!");
+            return;
+        }// cierra if
+        
+        System.out.print("Ingrese el nuevo nombre de la Especificacion: ");
+        String nuevoNombre = scan.nextLine();// ingresar el nuevo Nombre que se le dara a la Caracteristica
+        
+        if (nuevoNombre.isEmpty() || especificacionExiste(nuevoNombre)) {// abre if
+            System.out.println("El nuevo nombre de la especificacion no puede estar vacio o ya existe.");
+            return;
+        }// cierra if
+        
+        System.out.print("Ingrese la nueva descripcion de la Especificacion (opcional): ");
+        String nuevaDescripcion = scan.nextLine();// escribir la Nueva descripcion que se le dara a la Especificacion
+        
+         System.out.print("Ingrese el Nuevo tipo de Dato(texto,numero,fecha,etc...): ");
+        String nuevoTipoDato= scan.nextLine();
+        
+        List<String> especificaciones = new ArrayList<>();
+        try (BufferedReader br = new BufferedReader(new FileReader("especificaciones.txt"))) {// abre try
+            String linea;
+            while ((linea = br.readLine()) != null) {// abre while
+                String[] partes = linea.split("\\|");
+                if (partes[0].equals(nombreAntiguo)) {//abre if 
+                    especificaciones.add(nuevoNombre + "|" + nuevaDescripcion + "|" + nuevoTipoDato);// agrega el nuevo nombre / nueva descripcion
+                }// cierra if 
+                else {// abre else 
+                    especificaciones.add(linea);
+                }// cierra else
+            }// cierra while
+        }// cierra try 
+        
+        catch (IOException e) {// abre catch
+            System.out.println("Error al leer el archivo.");
+        }// cierra catch
+        
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter("especificaciones.txt"))) {// abre try
+            for (String especificacion : especificaciones) {// abre for
+                bw.write(especificacion);
+                bw.newLine();
+            }// cierra for
+            System.out.println("Especificacion modificada exitosamente!");
+        }// cierra try
+        catch (IOException e) {// abre Catch
+            System.out.println("Error al escribir en el archivo.");
+        }// cierra Catch
+}// cierra Modificar especificaciones 
     
      
   
