@@ -145,7 +145,7 @@ public class SistemaInventario {
          System.out.println("1. Definicion de Categorias");
          System.out.println("2. Definicion de Caracteristicas"); 
          System.out.println("3. Definicion de Especificaciones");
-         System.out.println("4. Asignacion de Caracteristicas y Especificaciones a Productos");
+         System.out.println("4. Asignacion de Categorias, Caracteristicas y Especificaciones a Productos");
          System.out.println("5. alta de Productos");
          System.out.println("6. baja de Productos"); 
          System.out.println("7. Modificacion de Productos");
@@ -162,12 +162,15 @@ public class SistemaInventario {
           break;
           case 3:
               definicionEspecificaciones();
+          case 4:
+              asignacionCaracteristicasEspecificacionesProductos();
+              
       }// cierra switch
   }// cierra Gestion de Productos 
       
    
       static void definicionCategorias (){// abre Definicion de Categorias 
-      String archivoCategoria= "categorias.txt";
+      
        Scanner scan= new Scanner (System.in);
         
         int Opcion;
@@ -211,7 +214,6 @@ public class SistemaInventario {
 
     static void mostrarCategorias() {// abre mostrar Categorias
         
-    File f= new File ("Categorias.txt");
     System.out.println("Listado de Categorias Existentes:");
             try (BufferedReader br = new BufferedReader(new FileReader("categorias.txt"))) {
             String linea;
@@ -577,12 +579,12 @@ public class SistemaInventario {
            modificarEspecificaciones();
             break;
         case 4:
-            //eliminarEspecificaciones();
+            eliminarEspecificaciones();
             break;
         case 5:
              System.out.println("Saliendo del Programa...");
             break;
-            default:
+            default: 
                 throw new AssertionError();
           
     }// cieera switch 
@@ -706,6 +708,121 @@ public class SistemaInventario {
             System.out.println("Error al escribir en el archivo.");
         }// cierra Catch
 }// cierra Modificar especificaciones 
+
+    private static void eliminarEspecificaciones() {// abre Eliminar especificaciones 
+        mostrarEspecificaciones();
+        
+        Scanner scan=new Scanner(System.in);
+        
+      System.out.print("Ingrese el nombre de la Especificacion que desea eliminar: ");
+        String nombre =scan.nextLine();
+        
+        if (!especificacionExiste(nombre)) {// abre if.si la especificacion no es igual a nombre antiguo entonces no existe
+            System.out.println("La Especificacion no existe.");
+            return;
+        }// cierra if
+        
+        System.out.print("¿Esta seguro de que desea eliminar la Especificacion? (si/no): ");
+        String confirmacion = scan.nextLine();
+        
+        if (!confirmacion.equalsIgnoreCase("si")) {// abre if. si confirmacion es diferente a si entonces eliminacion cancelada 
+            System.out.println("Eliminacion cancelada.");
+            return;
+        }// cierra if 
+        
+        List<String> especificaciones = new ArrayList<>();
+        try (BufferedReader br = new BufferedReader(new FileReader("especificaciones.txt"))) {// abre try
+            String linea;
+            while ((linea = br.readLine()) != null) {// abre while
+                String[] partes = linea.split("\\|");
+                if (!partes[0].equals(nombre)) {// abre if
+                    especificaciones.add(linea);
+                }// cierra if
+            }// cierra while
+        }// cierra try
+        catch (IOException e) {// abre catch
+            System.out.println("Error al leer el archivo.");
+        }// cierra catch
+        
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter("especificaciones.txt"))) {// abre try
+            for (String especificacion : especificaciones) {// abre for
+                bw.write(especificacion);
+                bw.newLine();
+            }// cierra for
+            System.out.println("Especificacion eliminada exitosamente!");
+        }// cierra try
+        catch (IOException e) {// abre catch
+            System.out.println("Error al escribir en el archivo.");
+        }// cierra catch
+        }// Cierra Eliminar especificaciones 
+
+    private static void asignacionCaracteristicasEspecificacionesProductos() {//abre asignacion de caracteristicas y especificaciones a productos
+      Scanner scan= new Scanner (System.in);
+        
+        int Opcion;
+      
+        System.out.println("***Asignacion de Categorias, Caracteristicas y Especificaciones a Productos***");
+        System.out.println("-------------------------------------------------------------------------------");
+        System.out.println("1. Crear Producto");
+        System.out.println("2. Modificar Producto"); 
+        System.out.println("3. Mostrar Productos");
+        System.out.println("5.Salir...");
+        System.out.println("Seleccione una opcion."); 
+        Opcion= scan.nextInt();
+    
+    switch (Opcion){// abre switch
+        
+        case 1:
+            crearProducto();
+            break;
+        case 2:
+            //modificarProducto();
+            break;
+        case 3:
+            //mostrarProducto();
+            break;
+        case 4:
+            System.out.println("Saliendo del Programa...");
+            return;
+        default:
+            System.out.println("Opción no valida, intente de nuevo");
+    }// cierra switch 
+ } // cierra asignacion de caracteristicas y especificaciones a productos
+
+    private static void crearProducto() {// abre Crear producto
+         Scanner scan=new Scanner(System.in);
+        
+        System.out.print("Ingrese el nombre del Producto: ");
+        String nombre = scan.nextLine();
+        
+        System.out.print("Ingrese la Categoria");
+       mostrarCaracteristicas();
+        
+         System.out.print("Ingrese la Caracteristica");
+        mostrarCaracteristicas();
+        
+         System.out.print("Ingrese la Especificacion");
+        mostrarEspecificaciones();
+        
+        
+        
+        
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(("Producto.txt"), true))) {// abre try
+            bw.write(nombre + "|" + categoria + "|" + caracteristica + "|" + especificacion);
+            bw.newLine();
+            System.out.println("Producto agregado exitosamente!");
+        }// cierra try
+        catch (IOException e) {// abre catch
+            System.out.println("Error al escribir en el archivo.");
+        }
+    
+    
+    
+    
+    
+    
+    }// cierra Crear Producto 
+    
     
      
   
