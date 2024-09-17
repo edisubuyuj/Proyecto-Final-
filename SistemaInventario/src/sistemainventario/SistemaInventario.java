@@ -795,19 +795,38 @@ public class SistemaInventario {
         System.out.print("Ingrese el nombre del Producto: ");
         String nombre = scan.nextLine();
         
-        System.out.print("Ingrese la Categoria");
-       mostrarCaracteristicas();
+      if (nombre.isEmpty() || productoExiste(nombre)) {// abre if
+            System.out.println("El nombre del prodcuto ya existe.");
+            return;         
+      }// cierra if
         
-         System.out.print("Ingrese la Caracteristica");
+        mostrarCategorias();
+        System.out.print("Ingrese el nombre de la Categoría: ");
+        String categoria = scan.nextLine();
+        if (categoriaExiste("categorias.txt")) {
+            System.out.println("Categoría no encontrada.");
+            return;
+        }// cerrar if
+        
         mostrarCaracteristicas();
+        System.out.print("Ingrese el nombre de la categoría: ");
+        String caracteristica = scan.nextLine();
+        if (caracteristicaExiste("caracteristicas.txt")) {
+            System.out.println("Caracteristica no encontrada.");
+            return;
+        }// cerrar if
         
-         System.out.print("Ingrese la Especificacion");
+       
         mostrarEspecificaciones();
+        System.out.print("Ingrese el nombre de la Especificacion: ");
+        String especificacion= scan.nextLine();
+        if (especificacionExiste("especificaciones.txt")) {
+            System.out.println("Especificacion no encontrada.");
+            return;
+        }// cerrar if
         
         
-        
-        
-        try (BufferedWriter bw = new BufferedWriter(new FileWriter(("Producto.txt"), true))) {// abre try
+     try (BufferedWriter bw = new BufferedWriter(new FileWriter(("productos.txt"), true))) {// abre try
             bw.write(nombre + "|" + categoria + "|" + caracteristica + "|" + especificacion);
             bw.newLine();
             System.out.println("Producto agregado exitosamente!");
@@ -815,26 +834,50 @@ public class SistemaInventario {
         catch (IOException e) {// abre catch
             System.out.println("Error al escribir en el archivo.");
         }
-    
-    
-    
-    
-    
-    
-    }// cierra Crear Producto 
+}// cierra Crear Producto 
     
     
      
-  
-        
-        
-     
-    
-    
-   }// cierra sistema de inventario
+    private static boolean productoExiste (String nombre) {// abre producto existe
+       
+    try (BufferedReader br = new BufferedReader(new FileReader(("productos.txt")))) {// abre try
+            String linea;
+            while ((linea = br.readLine()) != null) {// abre while
+                String[] partes = linea.split("\\|");
+                if (partes[0].equals(nombre)) {// abre if
+                    return true;
+                }// cierra if
+            }// cierra while
+        }// cierra try 
+      catch (IOException e) {// abre catch
+            System.out.println("Error al leer el archivo.");
+        }// cierra catch
+        return false;  
+}// // cierra producto existe 
 
     
     
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+}// cierra sistema de inventario
     
 
     
