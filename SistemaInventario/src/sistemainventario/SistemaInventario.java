@@ -14,6 +14,7 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+import java.util.UUID;
 
 /**
  *
@@ -54,7 +55,7 @@ public class SistemaInventario {
           }// cierra 2do if
           
           else {// abre 1er else 
-              System.out.println("constraseña incorrecta Saliendo del programa");
+              System.out.println("contraseña incorrecta Saliendo del programa");
               
           }// cierra 1er else 
           }// cierra 1er if
@@ -72,7 +73,7 @@ public class SistemaInventario {
     
    }
     
-    private static String cargarContraseñaAdmin(File archivoConfiguracion){
+    private static String cargarContraseñaAdmin(File archivoConfiguracion){// abre cargar contraseña admin
         try ( BufferedReader lector= new BufferedReader (new FileReader (archivoConfiguracion))){// abre try
            return lector.readLine(); 
         }// ciera try
@@ -81,7 +82,7 @@ public class SistemaInventario {
             e.printStackTrace();
             return null;
            }// cierra catch
-             }
+             }// cierra Cargar contraseña admin
     
     private static void guardarContraseñaAdmin(File archivoConfiguracion, String contraseña) {// abre guardar contraseña
         try (PrintWriter escritor = new PrintWriter (archivoConfiguracion)){
@@ -110,7 +111,7 @@ public class SistemaInventario {
         System.out.println("3. Pedidos de compra");
         System.out.println("4. Informes y Estadisticas"); 
         System.out.println("5. Salir");
-        System.out.println("6. Ingrese la Opcion que Desee:");
+        System.out.println(" Ingrese la Opcion que Desee");
         Opcion=scan.nextInt();
         System.out.println(Opcion);
         switch (Opcion){// abre switch
@@ -118,7 +119,7 @@ public class SistemaInventario {
                 gestionProductos();
                 break;
           
-            case 2: //controlExistencias();
+            case 2: controlExistencias();
             break;
             
             case 3: //pedidosCompra();
@@ -138,7 +139,8 @@ public class SistemaInventario {
     }// Cierra menu general 
 
   static void gestionProductos () {// abre metodo Gestion de Productos 
-      Scanner scan= new Scanner (System.in);  
+      Scanner scan= new Scanner (System.in);
+      
       int Opcion;
       System.out.println("***Bienvenido ha Gestion de Productos***");
          System.out.println("------------------------------------");
@@ -146,15 +148,14 @@ public class SistemaInventario {
          System.out.println("2. Definicion de Caracteristicas"); 
          System.out.println("3. Definicion de Especificaciones");
          System.out.println("4. Asignacion de Categorias, Caracteristicas y Especificaciones a Productos");
-         System.out.println("5. alta de Productos");
-         System.out.println("6. baja de Productos"); 
-         System.out.println("7. Modificacion de Productos");
-         System.out.println("8. Consideraciones Adicionales");
-         System.out.println("9. salir...");
+         System.out.println("5. salir...");
          System.out.println("Selecione una Opcion");
          Opcion= scan.nextInt();
+         
       System.out.println(Opcion);
+      
       switch (Opcion){// abre switch
+          
           case 1: 
               definicionCategorias();
           break;
@@ -164,6 +165,9 @@ public class SistemaInventario {
               definicionEspecificaciones();
           case 4:
               asignacionCaracteristicasEspecificacionesProductos();
+          case 5: 
+               System.out.println("Saliendo del programa");
+              break;
               
       }// cierra switch
   }// cierra Gestion de Productos 
@@ -766,7 +770,7 @@ public class SistemaInventario {
         System.out.println("1. Crear Producto");
         System.out.println("2. Modificar Producto"); 
         System.out.println("3. Mostrar Productos");
-        System.out.println("5.Salir...");
+        System.out.println("4.Salir...");
         System.out.println("Seleccione una opcion."); 
         Opcion= scan.nextInt();
     
@@ -776,10 +780,10 @@ public class SistemaInventario {
             crearProducto();
             break;
         case 2:
-            //modificarProducto();
+            modificarProducto();
             break;
         case 3:
-            //mostrarProducto();
+            mostrarProducto();
             break;
         case 4:
             System.out.println("Saliendo del Programa...");
@@ -789,6 +793,7 @@ public class SistemaInventario {
     }// cierra switch 
  } // cierra asignacion de caracteristicas y especificaciones a productos
 
+   
     private static void crearProducto() {// abre Crear producto
          Scanner scan=new Scanner(System.in);
         
@@ -809,7 +814,7 @@ public class SistemaInventario {
         }// cerrar if
         
         mostrarCaracteristicas();
-        System.out.print("Ingrese el nombre de la categoría: ");
+        System.out.print("Ingrese el nombre de la Caracteristica: ");
         String caracteristica = scan.nextLine();
         if (caracteristicaExiste("caracteristicas.txt")) {
             System.out.println("Caracteristica no encontrada.");
@@ -825,9 +830,33 @@ public class SistemaInventario {
             return;
         }// cerrar if
         
+        // Ingreso del precio de venta
+        double precio;
+        while (true) {
+            System.out.print("Ingrese el precio de venta del producto: ");
+            precio = scan.nextDouble();
+            if (precio > 0) // evalua si la cantidad es mayor a 0
+                break;
+            System.out.println("El precio debe ser un número positivo. Intente nuevamente.");
+        }
+
+        // Ingreso de la cantidad inicial de stock
+        int stock;
+        while (true) {
+            System.out.print("Ingrese la cantidad inicial de stock del producto: ");
+            stock = scan.nextInt();
+            if (stock >= 0) // evalua que la cantidad sea mayor o igual a 0
+                break;
+            System.out.println("La cantidad de stock debe ser un numero no negativo. Intente nuevamente.");
+        }
+
+        // Generar un identificador únicos
+        String id = UUID.randomUUID().toString();
+
+        
         
      try (BufferedWriter bw = new BufferedWriter(new FileWriter(("productos.txt"), true))) {// abre try
-            bw.write(nombre + "|" + categoria + "|" + caracteristica + "|" + especificacion);
+            bw.write(id + "|" + nombre + "|" + categoria + "|" + caracteristica + "|" + especificacion);
             bw.newLine();
             System.out.println("Producto agregado exitosamente!");
         }// cierra try
@@ -855,6 +884,177 @@ public class SistemaInventario {
         return false;  
 }// // cierra producto existe 
 
+    private static void modificarProducto() {// abre Modificar Producto 
+    
+      mostrarProducto();
+       Scanner scan=new Scanner(System.in);
+     
+        System.out.print("Ingrese el nombre del Producto que desea modificar: ");// escribir el Nombre del Producto existente en el archivo
+        String nombreAntiguo = scan.nextLine();
+        
+        if (!productoExiste(nombreAntiguo)) {//abre if. si Producto no es igual a nombre antiguo entonces no existe el Producto
+            System.out.println("El Producto no existe!");
+            return;
+        }// cierra if
+        
+        System.out.print("Ingrese el nuevo nombre del Producto: ");
+        String nuevoNombre = scan.nextLine();// ingresar el nuevo Nombre para el Producto.
+        
+        if (nuevoNombre.isEmpty() || productoExiste(nuevoNombre)) {// abre if
+            System.out.println("El nuevo nombre del Producto no puede estar vacio o ya existe.");
+            return;
+        }// cierra if
+        
+    mostrarCategorias();
+            System.out.print("Ingrese la nueva Categoria ");
+        String nuevaCategoria= scan.nextLine();
+        if (categoriaExiste("categorias.txt")) {
+            System.out.println("Categoría no encontrada.");
+            return;
+        }// Cierra if
+            
+    mostrarCaracteristicas();
+          System.out.print("Ingrese la nueva Caracteristica: ");
+        String nuevaCaracteristica= scan.nextLine();
+        if (caracteristicaExiste("caracteristicas.txt")) {
+            System.out.println("Caracteristica no encontrada.");
+            return;
+        }// cierra if
+        
+        mostrarEspecificaciones();
+          System.out.print("Ingrese la nueva Especificacion: ");
+        String nuevaEspecificacion= scan.nextLine();
+        if (especificacionExiste("especificaciones.txt")) {
+            System.out.println("Especificacion no encontrada.");
+            return;
+        }// cierra if
+        
+        
+        List<String> producto = new ArrayList<>();
+        try (BufferedReader br = new BufferedReader(new FileReader("productos.txt"))) {// abre try
+            String linea;
+            while ((linea = br.readLine()) != null) {// abre while
+                String[] partes = linea.split("\\|");
+                if (partes[0].equals(nombreAntiguo)) {//abre if 
+                    producto.add(nuevoNombre + "|" + nuevaCategoria + "|" + nuevaCaracteristica + "|"  + nuevaEspecificacion);// agrega el nuevo nombre,categoria,caracteristica, especificaion al Producto
+                }// cierra if 
+                
+                else {// abre else 
+                    producto.add(linea);
+                }// cierra else
+            }// cierra while
+        }// cierra try 
+        
+        catch (IOException e) {// abre catch
+            System.out.println("Error al leer el archivo.");
+        }// cierra catch
+        
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter("productos.txt"))) {// abre try
+            for (String productos : producto) {// abre for
+                bw.write(productos);
+                bw.newLine();
+            }// cierra for
+            System.out.println("Producto modificado exitosamente!");
+        }// cierra try
+        catch (IOException e) {// abre Catch
+            System.out.println("Error al escribir en el archivo.");
+        }// cierra Catch
+    
+ 
+    }// cierra Modificar Producto 
+
+    private static void mostrarProducto() {// abre Mostrar Producto 
+    
+     System.out.println("Listado de Productos Existentes:");
+            try (BufferedReader br = new BufferedReader(new FileReader("productos.txt"))) {// abre try 
+            String linea;
+            while ((linea = br.readLine()) != null) {// abre while
+                String[] partes = linea.split("\\|");
+                
+                System.out.println("ID: " + partes[0]);
+                System.out.println("Producto: " + partes[1]);
+                System.out.println("Categoria: " + (partes.length > 2 ? partes[2] : "N/A"));
+                System.out.println("Caracteristica: " + (partes.length > 3 ? partes[3] : "N/A"));
+                System.out.println("Especificacion: " + (partes.length > 4 ? partes[4] : "N/A"));
+                System.out.println();
+            }// cierra while
+        }// cierra try 
+            catch (IOException e) {// abre catch
+            System.out.println("Error al leer el archivo.");
+            }// cierra catch 
+   
+}// cierra Mostrar Producto
+
+    private static void controlExistencias() {// abre Control de Existencias 
+         Scanner scan= new Scanner (System.in);
+      
+      int Opcion;
+      System.out.println("*** Bienvenido ha Control de Existencias ***");
+         System.out.println("--------------------------------------");
+         System.out.println("1. Registro de Entrada de Prodcutos");
+         System.out.println("2. Registro de Salida de Productos"); 
+         System.out.println("3. Generacion de alertas de Stock Bajo");
+         System.out.println("4. Visualización del Historial de Movimientos de Stock");
+         System.out.println("5. salir...");
+         System.out.println("Selecione una Opcion");
+         Opcion= scan.nextInt();
+         
+      System.out.println(Opcion);
+      
+      switch (Opcion){// abre Switch  
+       
+          case 1:
+              registroEntrada();
+              break;
+          case 2: 
+              //registroSalida();
+              break;
+          case 3:
+              //alertaStock();
+              break;
+          case 4:
+              //historialMovimientos();
+              break;
+              
+          case 5:
+              System.out.println("Saliendo del Programa...");
+            return;
+        default:
+            System.out.println("Opción no valida, intente de nuevo");
+        
+      }// cierra Switch
+        
+      
+    }// Cierra Control de Exitencias 
+    
+
+    private static void registroEntrada() {// abre registro de entradas 
+     
+        Scanner scan = new Scanner(System.in);
+       
+        
+         System.out.print("Ingrese el código del producto: ");
+        String codigoProducto = scan.nextLine();
+       
+        if (!productoExiste(codigoProducto)) {//abre if. si Producto no es igual a nombre antiguo entonces no existe el Producto
+             System.out.println("El producto no está registrado.");
+            return;
+        }// cierra if
+        
+         else {
+            System.out.print("Ingrese la cantidad de productos a ingresar: ");
+            int cantidad = scan.nextInt();
+            if (cantidad <= 0) {
+                System.out.println("La cantidad debe ser mayor que cero.");
+                return;
+            }
+            
+            System.out.println("La entrada de productos se ha realizado correctamente.");
+        }
+    
+    }// cierra registro de entradas 
+
+    
     
     
 

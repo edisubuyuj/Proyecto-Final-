@@ -1,1 +1,4 @@
-Blusa|Producto de Especialidad|Efectivas|Color
+Playera|Ropa|Rosado|Talla M
+ede309e9-d964-4897-bc44-62be02fb446b|Blusa|Ropa|Rosado|Talla M
+0f679ff9-b4ba-4a2f-8c6d-2ef2495a6ee1|Pantufla|Ropa|Rosado|Talla M
+da01f296-9627-4607-83c5-6775fa4b29ea|Tablet|Producto de Especicalidad |Efectivas|Color

@@ -1,1 +1,2 @@
 Color|Azul|Numero
+Talla M|Niñas|numero
