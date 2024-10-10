@@ -149,6 +149,7 @@ public class SistemaInventario {
          System.out.println("3. Definicion de Especificaciones");
          System.out.println("4. Asignacion de Categorias, Caracteristicas y Especificaciones a Productos");
          System.out.println("5. salir...");
+         System.out.println("6. regresar a funcionalidades");
          System.out.println("Selecione una Opcion");
          Opcion= scan.nextInt();
          
@@ -168,7 +169,8 @@ public class SistemaInventario {
           case 5: 
                System.out.println("Saliendo del programa");
               break;
-              
+          case 6: 
+              MenuGeneral(); return;
       }// cierra switch
   }// cierra Gestion de Productos 
       
@@ -234,7 +236,7 @@ public class SistemaInventario {
 
     static void agregarCategoria() {// abre agreagar Categoria 
         Scanner scan=new Scanner(System.in);
-                System.out.print("Ingrese el nombre de la categoría: ");
+        System.out.print("Ingrese el nombre de la categoría: ");
         String nombre = scan.nextLine();
         
         if (nombre.isEmpty() || categoriaExiste(nombre)) {
@@ -327,7 +329,7 @@ public class SistemaInventario {
       System.out.print("Ingrese el nombre de la categoria que desea eliminar: ");
         String nombre = scan.nextLine();
         
-        if (!categoriaExiste(nombre)) {
+        if (!categoriaExiste(nombre)) {// si el nombre es diferente a carateforia existe. entonces no existe 
             System.out.println("La categoria no existe.");
             return;
         }
@@ -837,7 +839,7 @@ public class SistemaInventario {
             precio = scan.nextDouble();
             if (precio > 0) // evalua si la cantidad es mayor a 0
                 break;
-            System.out.println("El precio debe ser un número positivo. Intente nuevamente.");
+            System.out.println("El precio debe ser un número positivo. Intente nuevamente");
         }
 
         // Ingreso de la cantidad inicial de stock
@@ -850,7 +852,7 @@ public class SistemaInventario {
             System.out.println("La cantidad de stock debe ser un numero no negativo. Intente nuevamente.");
         }
 
-        // Generar un identificador únicos
+        // Generar un identificador unico
         String id = UUID.randomUUID().toString();
 
         
@@ -1036,7 +1038,7 @@ public class SistemaInventario {
          System.out.print("Ingrese el código del producto: ");
         String codigoProducto = scan.nextLine();
        
-        if (!productoExiste(codigoProducto)) {//abre if. si Producto no es igual a nombre antiguo entonces no existe el Producto
+        if (!productoExiste(codigoProducto)) {//abre if. si el codigo de producto es diferente entonces no existe
              System.out.println("El producto no está registrado.");
             return;
         }// cierra if
@@ -1052,28 +1054,11 @@ public class SistemaInventario {
             System.out.println("La entrada de productos se ha realizado correctamente.");
         }
     
+      
+    
     }// cierra registro de entradas 
 
-    
-    
-    
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+   
 
 
 
@@ -1083,6 +1068,3 @@ public class SistemaInventario {
     
    
    
-        
-     
-
