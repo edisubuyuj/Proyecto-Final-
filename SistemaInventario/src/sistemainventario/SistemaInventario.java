@@ -239,10 +239,10 @@ public class SistemaInventario {
         System.out.print("Ingrese el nombre de la categoría: ");
         String nombre = scan.nextLine();
         
-        if (nombre.isEmpty() || categoriaExiste(nombre)) {
+        if (nombre.isEmpty() || categoriaExiste(nombre)) { // abre if evaluar si el nombre no está vacío o ya existe.
             System.out.println("El nombre de la categoría no puede estar vacío o ya existe.");
             return;
-        }
+        }// cierra if
 
         System.out.print("Ingrese la descripcion de la categoría (opcional): ");
         String descripcion = scan.nextLine();
@@ -426,7 +426,7 @@ public class SistemaInventario {
         System.out.print("Ingrese el nombre de la Caracteristica: ");
         String nombre = scan.nextLine();
         
-        if (nombre.isEmpty() || caracteristicaExiste(nombre)) {// abre if
+        if (nombre.isEmpty() || caracteristicaExiste(nombre)) {// abre if si el nombre no esta vacio o ya existe
             System.out.println("El nombre de la Caracteristica no puede estar vacío o ya existe.");
             return;
         }// cierra if
@@ -451,7 +451,7 @@ public class SistemaInventario {
         System.out.print("Ingrese el nombre de la Caracteristica que desea modificar: ");// escribir el Nombre de la caracteristica existente en el archivo
         String nombreAntiguo = scan.nextLine();
         
-        if (!caracteristicaExiste(nombreAntiguo)) {//abre if. si caracteritica no es igual a nombre antiguo enotnces no existe
+        if (!caracteristicaExiste(nombreAntiguo)) {//abre if. si caracteritica no es igual a nombre antiguo entonces no existe
             System.out.println("La caracteristica no existe.");
             return;
         }// cierra if
@@ -459,7 +459,7 @@ public class SistemaInventario {
         System.out.print("Ingrese el nuevo nombre de la caracteristica: ");
         String nuevoNombre = scan.nextLine();// ingresar el nuevo Nombre que se le dara a la Caracteristica
         
-        if (nuevoNombre.isEmpty() || caracteristicaExiste(nuevoNombre)) {// abre if
+        if (nuevoNombre.isEmpty() || caracteristicaExiste(nuevoNombre)) {// abre if evaluar si el nuevo nombre no está vacío o ya existe
             System.out.println("El nuevo nombre de la Caracteristica no puede estar vacio o ya existe.");
             return;
         }// cierra if
@@ -467,12 +467,12 @@ public class SistemaInventario {
         System.out.print("Ingrese la nueva descripcion de la Caracteristica (opcional): ");
         String nuevaDescripcion = scan.nextLine();// escribir la Nueva descripcion que se le dara a la caracteristica
         
-        List<String> caracteristicas = new ArrayList<>();
+        List<String> caracteristicas = new ArrayList<>(); // lista de cadena de caracteristicas
         try (BufferedReader br = new BufferedReader(new FileReader("caracteristicas.txt"))) {// abre try
             String linea;
-            while ((linea = br.readLine()) != null) {// abre while
+            while ((linea = br.readLine()) != null) {// abre recorrer la linea y leer 
                 String[] partes = linea.split("\\|");
-                if (partes[0].equals(nombreAntiguo)) {//abre if 
+                if (partes[0].equals(nombreAntiguo)) {//abre if si (partes son iguales(nombreAntiguo))
                     caracteristicas.add(nuevoNombre + "|" + nuevaDescripcion);// agrega el nuevo nombre / nueva descripcion
                 }// cierra if 
                 else {// abre else 
@@ -485,7 +485,7 @@ public class SistemaInventario {
         }// cierra catch
         
         try (BufferedWriter bw = new BufferedWriter(new FileWriter("caracteristicas.txt"))) {// abre try
-            for (String caracteristica : caracteristicas) {// abre for
+            for (String caracteristica : caracteristicas) {// abre for para la cadena de caracteristicas
                 bw.write(caracteristica);
                 bw.newLine();
             }// cierra for
@@ -503,7 +503,7 @@ public class SistemaInventario {
       System.out.print("Ingrese el nombre de la caracteristica que desea eliminar: ");
         String nombre = scan.nextLine();
         
-        if (!caracteristicaExiste(nombre)) {// abre if.si caracteritica no es igual a nombre antiguo enotnces no existe
+        if (!caracteristicaExiste(nombre)) {// abre if.si caracteritica no es igual a nombre antiguo entonces no existe
             System.out.println("La Caracteristica no existe.");
             return;
         }// cierra if
@@ -519,7 +519,7 @@ public class SistemaInventario {
         List<String> caracteristicas = new ArrayList<>();
         try (BufferedReader br = new BufferedReader(new FileReader("caracteristicas.txt"))) {// abre try
             String linea;
-            while ((linea = br.readLine()) != null) {// abre while
+            while ((linea = br.readLine()) != null) {// abre while recorre todo el archivo por línea que no haya un valor nulo.
                 String[] partes = linea.split("\\|");
                 if (!partes[0].equals(nombre)) {// abre if
                     caracteristicas.add(linea);
@@ -546,7 +546,7 @@ public class SistemaInventario {
       try (BufferedReader br = new BufferedReader(new FileReader(("caracteristicas.txt")))) {// abre try
             String linea;
             while ((linea = br.readLine()) != null) {// abre while
-                String[] partes = linea.split("\\|");
+                String[] partes = linea.split("\\|"); // partes dividir por medio de \\| por medio de estos separadores 
                 if (partes[0].equals(nombre)) {// abre if
                     return true;
                 }// cierra if
@@ -620,7 +620,7 @@ public class SistemaInventario {
         System.out.print("Ingrese el nombre de la Especificacion: ");
         String nombre = scan.nextLine();
         
-        if (nombre.isEmpty() || especificacionExiste(nombre)) {// abre if
+        if (nombre.isEmpty() || especificacionExiste(nombre)) {// abre if evaluar si el nombre no está vacío o ya existe.
             System.out.println("El nombre de la Especificacion no puede estar vacío o ya existe.");
             return;
         }// cierra if
@@ -645,7 +645,7 @@ public class SistemaInventario {
       
         try (BufferedReader br = new BufferedReader(new FileReader(("especificaciones.txt")))) {// abre try
             String linea;
-            while ((linea = br.readLine()) != null) {// abre while
+            while ((linea = br.readLine()) != null) {// abre while recorre todo el archivo por línea que no haya un valor nulo.
                 String[] partes = linea.split("\\|");
                 if (partes[0].equals(nombre)) {// abre if
                     return true;
@@ -666,7 +666,7 @@ public class SistemaInventario {
         System.out.print("Ingrese el nombre de la Especificacion que desea modificar: ");// escribir el Nombre de la Especificacion existente en el archivo
         String nombreAntiguo = scan.nextLine();
         
-        if (!especificacionExiste(nombreAntiguo)) {//abre if. si especificacion no es igual a nombre antiguo enotonces no existe
+        if (!especificacionExiste(nombreAntiguo)) {//abre if. si especificacion no es igual a nombre antiguo entonces no existe
             System.out.println("La Especificacion no existe!");
             return;
         }// cierra if
@@ -739,7 +739,7 @@ public class SistemaInventario {
         List<String> especificaciones = new ArrayList<>();
         try (BufferedReader br = new BufferedReader(new FileReader("especificaciones.txt"))) {// abre try
             String linea;
-            while ((linea = br.readLine()) != null) {// abre while
+            while ((linea = br.readLine()) != null) {// abre while recorre todo el archivo por línea que no haya un valor nulo
                 String[] partes = linea.split("\\|");
                 if (!partes[0].equals(nombre)) {// abre if
                     especificaciones.add(linea);
@@ -858,7 +858,7 @@ public class SistemaInventario {
         
         
      try (BufferedWriter bw = new BufferedWriter(new FileWriter(("productos.txt"), true))) {// abre try
-            bw.write(id + "|" + nombre + "|" + categoria + "|" + caracteristica + "|" + especificacion);
+            bw.write(id + "|" + nombre + "|" + categoria + "|" + caracteristica + "|" + especificacion);// scribir write
             bw.newLine();
             System.out.println("Producto agregado exitosamente!");
         }// cierra try
@@ -873,7 +873,7 @@ public class SistemaInventario {
        
     try (BufferedReader br = new BufferedReader(new FileReader(("productos.txt")))) {// abre try
             String linea;
-            while ((linea = br.readLine()) != null) {// abre while
+            while ((linea = br.readLine()) != null) {// abre while recorre todas las lineas que no haya un valor nulo
                 String[] partes = linea.split("\\|");
                 if (partes[0].equals(nombre)) {// abre if
                     return true;
@@ -902,7 +902,7 @@ public class SistemaInventario {
         System.out.print("Ingrese el nuevo nombre del Producto: ");
         String nuevoNombre = scan.nextLine();// ingresar el nuevo Nombre para el Producto.
         
-        if (nuevoNombre.isEmpty() || productoExiste(nuevoNombre)) {// abre if
+        if (nuevoNombre.isEmpty() || productoExiste(nuevoNombre)) {// abre if evaluar si el nuevo nombre no esta vacio o ya existe
             System.out.println("El nuevo nombre del Producto no puede estar vacio o ya existe.");
             return;
         }// cierra if
@@ -910,7 +910,7 @@ public class SistemaInventario {
     mostrarCategorias();
             System.out.print("Ingrese la nueva Categoria ");
         String nuevaCategoria= scan.nextLine();
-        if (categoriaExiste("categorias.txt")) {
+        if (categoriaExiste("categorias.txt")) { //abre if evaluar si la categoria existe en el archivo de texto
             System.out.println("Categoría no encontrada.");
             return;
         }// Cierra if
@@ -937,12 +937,12 @@ public class SistemaInventario {
             String linea;
             while ((linea = br.readLine()) != null) {// abre while
                 String[] partes = linea.split("\\|");
-                if (partes[0].equals(nombreAntiguo)) {//abre if 
+                if (partes[0].equals(nombreAntiguo)) {//abre if evaluar si partes 0 es igual a nombre antiguo
                     producto.add(nuevoNombre + "|" + nuevaCategoria + "|" + nuevaCaracteristica + "|"  + nuevaEspecificacion);// agrega el nuevo nombre,categoria,caracteristica, especificaion al Producto
                 }// cierra if 
                 
                 else {// abre else 
-                    producto.add(linea);
+                    producto.add(linea); //agregar producto en la linea 
                 }// cierra else
             }// cierra while
         }// cierra try 
@@ -1043,24 +1043,23 @@ public class SistemaInventario {
             return;
         }// cierra if
         
-         else {
-            System.out.print("Ingrese la cantidad de productos a ingresar: ");
+         else {// abre else 
+            System.out.print("cantidad de productos que desea ingresar: ");
             int cantidad = scan.nextInt();
-            if (cantidad <= 0) {
+            if (cantidad <= 0) { // abre if evaluar si la cantidad es mayor o igual a 0
                 System.out.println("La cantidad debe ser mayor que cero.");
                 return;
-            }
+            }// cierra if
+          
+       
             
             System.out.println("La entrada de productos se ha realizado correctamente.");
-        }
+        }// cierra else 
     
       
-    
     }// cierra registro de entradas 
 
-   
-
-
+  
 
 }// cierra sistema de inventario
     
